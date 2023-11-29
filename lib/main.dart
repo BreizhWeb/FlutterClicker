@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterclicker/ressources.dart';
 import 'ressources.dart';
 
 void main() {
@@ -39,25 +38,50 @@ class ResourceGrid extends StatelessWidget {
       ),
       itemCount: resources.length,
       itemBuilder: (BuildContext context, int index) {
-        return GestureDetector(
-          onTap: () {
-            // Logic to handle resource click
-            // Increment resource quantity
-          },
-          child: Container(
-            color: resources[index].color,
-            child: Center(
-              child: Text(
-                resources[index].name,
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                ),
+        return ResourceWidget(resources: resources[index]);
+      },
+    );
+  }
+}
+
+class ResourceWidget extends StatelessWidget {
+  final Resource resources;
+
+  ResourceWidget({required this.resources});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: Container(
+        color: resources.color,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              resources.name,
+              style: TextStyle(
+                fontSize: 20.0,
+                color: Colors.white,
               ),
             ),
-          ),
-        );
-      },
+            SizedBox(height: 5.0),
+            Text(
+              'Quantité: ${resources.quantity}',
+              style: TextStyle(
+                fontSize: 14.0,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(height: 5.0),
+            ElevatedButton(
+              onPressed: () {
+                resources.quantity++; // Increment resource quantity
+              },
+              child: Text('Miner'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
