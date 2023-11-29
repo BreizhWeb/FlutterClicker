@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'ressources.dart';
+import 'boutique.dart'; // Importez la page BoutiquePage depuis boutique.dart
+import 'ressources.dart'; // Importez les ressources et les recettes
+import 'recettes.dart'; // Importez les ressources et les recettes
+
 
 void main() {
   runApp(MyApp());
@@ -15,12 +18,36 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Ressources'),
-        ),
-        body: ResourceGrid(resources: resources),
+      home: MainPage(resources: resources), // Utilisez MainPage comme page d'accueil
+    );
+  }
+}
+
+class MainPage extends StatelessWidget {
+  final List<Resource> resources;
+
+  MainPage({required this.resources});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Ressources'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.shopping_cart), // Utilisez une icône appropriée pour la boutique
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BoutiquePage(recipes: getRecipes(), resources: resources),
+                ),
+              );
+            },
+          ),
+        ],
       ),
+      body: ResourceGrid(resources: resources),
     );
   }
 }
@@ -38,27 +65,32 @@ class ResourceGrid extends StatelessWidget {
       ),
       itemCount: resources.length,
       itemBuilder: (BuildContext context, int index) {
-        return ResourceWidget(resources: resources[index]);
+        return ResourceWidget(resource: resources[index]);
       },
     );
   }
 }
 
-class ResourceWidget extends StatelessWidget {
-  final Resource resources;
+class ResourceWidget extends StatefulWidget {
+  final Resource resource;
 
-  ResourceWidget({required this.resources});
+  ResourceWidget({required this.resource});
 
+  @override
+  _ResourceWidgetState createState() => _ResourceWidgetState();
+}
+
+class _ResourceWidgetState extends State<ResourceWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Container(
-        color: resources.color,
+        color: widget.resource.color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              resources.name,
+              widget.resource.name,
               style: TextStyle(
                 fontSize: 20.0,
                 color: Colors.white,
@@ -66,7 +98,7 @@ class ResourceWidget extends StatelessWidget {
             ),
             SizedBox(height: 5.0),
             Text(
-              'Quantité: ${resources.quantity}',
+              'Quantité: ${widget.resource.quantity}',
               style: TextStyle(
                 fontSize: 14.0,
                 color: Colors.white,
@@ -75,7 +107,9 @@ class ResourceWidget extends StatelessWidget {
             SizedBox(height: 5.0),
             ElevatedButton(
               onPressed: () {
-                resources.quantity++; // Increment resource quantity
+                setState(() {
+                  widget.resource.quantity++; // Increment resource quantity
+                });
               },
               child: Text('Miner'),
             ),
