@@ -9,6 +9,17 @@ class Resource {
   Resource({required this.name, required this.color, required this.description ,this.quantity = 0});
 }
 
+class ResourcesManager {
+  static final ResourcesManager _instance = ResourcesManager._internal();
+  factory ResourcesManager() => _instance;
+  ResourcesManager._internal();
+
+  List<Resource> resources = getResources();
+}
+
+final resourcesManager = ResourcesManager();
+
+
 List<Resource> getResources() {
   return [
     Resource(name: 'Bois', color: const Color(0xFF967969), description: "Du bois brut"),

@@ -71,9 +71,8 @@ class BoutiquePage extends StatelessWidget {
   }
 
   void _produceItem(Recipe recipe) {
-    // Déduire les ressources nécessaires pour la recette produite
     for (var cost in recipe.cost) {
-      var resource = resources.firstWhere(
+      var resource = resourcesManager.resources.firstWhere(
         (res) => res.name == cost.resource.name,
         orElse: () => Resource(
           name: cost.resource.name,
@@ -84,12 +83,8 @@ class BoutiquePage extends StatelessWidget {
       );
       resource.quantity -= cost.quantity;
 
-      resources.removeWhere((res) => res.name == resource.name);
-      resources.add(resource);
+      resourcesManager.resources.removeWhere((res) => res.name == resource.name);
+      resourcesManager.resources.add(resource);
     }
-
-    // Mettre à jour l'affichage de l'interface utilisateur après la déduction des ressources
-    // (Vous devez rafraîchir l'affichage manuellement ou utiliser un State Management)
-    // setState(() {});
   }
 }

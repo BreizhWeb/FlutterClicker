@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'boutique.dart'; // Importez la page BoutiquePage depuis boutique.dart
-import 'ressources.dart'; // Importez les ressources et les recettes
-import 'recettes.dart'; // Importez les ressources et les recettes
-
+import 'boutique.dart';
+import 'inventaire.dart';
+import 'ressources.dart';
+import 'recettes.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +18,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainPage(resources: resources), // Utilisez MainPage comme page d'accueil
+      initialRoute: '/',
+      routes: {
+        '/': (context) => MainPage(resources: resources),
+        '/boutique': (context) => BoutiquePage(recipes: getRecipes(), resources: resources),
+        '/inventaire': (context) => InventairePage(recipes: getRecipes(), resources: resources),
+      },
     );
   }
 }
@@ -35,14 +40,15 @@ class MainPage extends StatelessWidget {
         title: Text('Ressources'),
         actions: [
           IconButton(
-            icon: Icon(Icons.shopping_cart), // Utilisez une icône appropriée pour la boutique
+            icon: Icon(Icons.inventory),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BoutiquePage(recipes: getRecipes(), resources: resources),
-                ),
-              );
+              Navigator.pushNamed(context, '/inventaire');
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.shopping_cart),
+            onPressed: () {
+              Navigator.pushNamed(context, '/boutique');
             },
           ),
         ],
@@ -108,7 +114,7 @@ class _ResourceWidgetState extends State<ResourceWidget> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  widget.resource.quantity++; // Increment resource quantity
+                  widget.resource.quantity++;
                 });
               },
               child: Text('Miner'),
