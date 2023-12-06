@@ -13,7 +13,7 @@ class BoutiquePage extends StatefulWidget {
 }
 
 class _BoutiquePageState extends State<BoutiquePage> {
-  late List<bool> canProduceList;
+  late List<bool> canProduceList; // Liste permettant de suivre l'état de chaque recette
 
   @override
   void initState() {
@@ -42,11 +42,11 @@ class _BoutiquePageState extends State<BoutiquePage> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(recipe.description),
-                _buildRecipeCosts(recipe),
+                _buildRecipeCosts(recipe), // Affiche les coûts de la recette
               ],
             ),
             trailing: ElevatedButton(
-              onPressed: canProduceList[index] ? () => _produceItem(recipe, index) : null,
+              onPressed: canProduceList[index] ? () => _produceItem(recipe, index) : null, // Empêche la production si les ressources nécessaires ne sont pas disponibles
               child: Text('Produire'),
             ),
           );
@@ -55,6 +55,7 @@ class _BoutiquePageState extends State<BoutiquePage> {
     );
   }
 
+  // Construit les coûts de la recette sous forme de texte
   Widget _buildRecipeCosts(Recipe recipe) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,8 +65,8 @@ class _BoutiquePageState extends State<BoutiquePage> {
     );
   }
 
+  // Vérifie si les ressources nécessaires pour fabriquer la recette sont disponibles
   bool _canProduceRecipe(Recipe recipe) {
-    // Vérifie si les ressources nécessaires pour fabriquer la recette sont disponibles
     for (var cost in recipe.cost) {
       var resource = widget.resourcesManager.resources.firstWhere(
         (res) => res.name == cost.resource.name,
@@ -83,6 +84,7 @@ class _BoutiquePageState extends State<BoutiquePage> {
     return true;
   }
 
+  // Produit la recette sélectionnée
   void _produceItem(Recipe recipe, int index) {
     for (var cost in recipe.cost) {
       var resource = widget.resourcesManager.resources.firstWhere(
@@ -94,7 +96,7 @@ class _BoutiquePageState extends State<BoutiquePage> {
           quantity: 0,
         ),
       );
-      resource.quantity -= cost.quantity;
+      resource.quantity -= cost.quantity; // Déduit les coûts des ressources nécessaires à la production
 
       // Mettre à jour les ressources dans resourcesManager
       widget.resourcesManager.consumeResources([resource]);

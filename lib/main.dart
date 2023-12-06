@@ -10,6 +10,7 @@ void main() {
   runApp(MyApp(resourcesManager: resourcesManager, recipes: recipes));
 }
 
+// Point d'entrée de l'application
 class MyApp extends StatelessWidget {
   final ResourcesManager resourcesManager;
   final List<Recipe> recipes;
@@ -26,13 +27,14 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => MainPage(resourcesManager: resourcesManager), // Passer resourcesManager à MainPage
-        '/boutique': (context) => BoutiquePage( resourcesManager: resourcesManager, recipes: recipes,), // Passer resourcesManager à BoutiquePage
+        '/boutique': (context) => BoutiquePage(resourcesManager: resourcesManager, recipes: recipes,), // Passer resourcesManager à BoutiquePage
         '/inventaire': (context) => InventairePage(recipes: getRecipes(), resourcesManager: resourcesManager), // Passer resourcesManager à InventairePage
       },
     );
   }
 }
 
+// Page principale de l'application
 class MainPage extends StatelessWidget {
   final ResourcesManager resourcesManager;
 
@@ -47,7 +49,7 @@ class MainPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.inventory),
             onPressed: () {
-              Navigator.pushNamed(context, '/inventaire');
+              Navigator.pushNamed(context, '/inventaire'); // Navigation vers la page d'inventaire
             },
           ),
           IconButton(
@@ -61,11 +63,12 @@ class MainPage extends StatelessWidget {
           ),
         ],
       ),
-      body: ResourceGrid(resources: resourcesManager.resources),
+      body: ResourceGrid(resources: resourcesManager.resources), // Affichage des ressources disponibles
     );
   }
 }
 
+// Grille affichant les ressources
 class ResourceGrid extends StatelessWidget {
   final List<Resource> resources;
 
@@ -75,16 +78,17 @@ class ResourceGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
+        crossAxisCount: 4, // Nombre de ressources affichées par ligne
       ),
       itemCount: resources.length,
       itemBuilder: (BuildContext context, int index) {
-        return ResourceWidget(resource: resources[index]);
+        return ResourceWidget(resource: resources[index]); // Affichage de chaque ressource
       },
     );
   }
 }
 
+// Widget représentant une ressource individuelle
 class ResourceWidget extends StatefulWidget {
   final Resource resource;
 
@@ -122,7 +126,7 @@ class _ResourceWidgetState extends State<ResourceWidget> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  widget.resource.quantity++;
+                  widget.resource.quantity++; // Augmentation de la quantité lorsqu'on appuie sur le bouton
                 });
               },
               child: Text('Miner'),

@@ -3,8 +3,8 @@ import 'recettes.dart';
 import 'ressources.dart';
 
 class InventairePage extends StatelessWidget {
-  final List<Recipe> recipes;
-  final ResourcesManager resourcesManager;
+  final List<Recipe> recipes; // Liste des recettes
+  final ResourcesManager resourcesManager; // Gestionnaire des ressources
 
   InventairePage({required this.recipes, required this.resourcesManager});
 
@@ -24,6 +24,7 @@ class InventairePage extends StatelessWidget {
     );
   }
 
+  // Widget pour afficher la liste des ressources avec leur quantité
   Widget _buildResourceList() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,6 +37,7 @@ class InventairePage extends StatelessWidget {
     );
   }
 
+  // Widget pour afficher la liste des recettes produites avec leur quantité
   Widget _buildProducedItemsList() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

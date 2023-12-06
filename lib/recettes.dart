@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'ressources.dart';
 
 class Recipe {
-  final String name;
-  final String description;
-  final String type;
-  final String gameplay;
-  final List<RecipeCost> cost;
-  int quantity; // Ajout du champ quantity
+  final String name; // Le nom de la recette
+  final String description; // La description de la recette
+  final String type; // Le type de la recette (outil, matériau, composant, etc.)
+  final String gameplay; // Description du gameplay associé à la recette
+  final List<RecipeCost> cost; // La liste des coûts pour créer cette recette
+  int quantity; // La quantité de cette recette produite
 
   Recipe({
     required this.name,
@@ -15,13 +15,13 @@ class Recipe {
     required this.type,
     required this.gameplay,
     required this.cost,
-    this.quantity = 0, // Initialisation de la quantité à zéro par défaut
+    this.quantity = 0, // La quantité est initialisée à zéro par défaut
   });
 }
 
 class RecipeCost {
-  final int quantity;
-  final Resource resource;
+  final int quantity; // La quantité de la ressource nécessaire pour cette recette
+  final Resource resource; // La ressource requise pour cette recette
 
   RecipeCost({required this.quantity, required this.resource});
 }
