@@ -83,7 +83,7 @@ class _BoutiquePageState extends State<BoutiquePage> {
     return true;
   }
 
-    void _produceItem(Recipe recipe, int index) {
+  void _produceItem(Recipe recipe, int index) {
     for (var cost in recipe.cost) {
       var resource = widget.resourcesManager.resources.firstWhere(
         (res) => res.name == cost.resource.name,
@@ -99,6 +99,11 @@ class _BoutiquePageState extends State<BoutiquePage> {
       // Mettre à jour les ressources dans resourcesManager
       widget.resourcesManager.consumeResources([resource]);
     }
+
+    // Mettre à jour la quantité de la recette produite
+    setState(() {
+      recipe.quantity++; // Augmente la quantité de la recette produite
+    });
 
     // Actualiser l'état de la liste entière après la production
     setState(() {

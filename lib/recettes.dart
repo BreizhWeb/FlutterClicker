@@ -7,6 +7,7 @@ class Recipe {
   final String type;
   final String gameplay;
   final List<RecipeCost> cost;
+  int quantity; // Ajout du champ quantity
 
   Recipe({
     required this.name,
@@ -14,6 +15,7 @@ class Recipe {
     required this.type,
     required this.gameplay,
     required this.cost,
+    this.quantity = 0, // Initialisation de la quantité à zéro par défaut
   });
 }
 
@@ -41,6 +43,7 @@ List<Recipe> getRecipes() {
           resource: Resource(name: 'Minerai de fer', color: const Color(0xFFced4da), description: "Du minerai de fer brut"),
         ),
       ],
+      quantity: 0,
     ),
     Recipe(
       name: 'Pioche',
@@ -57,6 +60,7 @@ List<Recipe> getRecipes() {
           resource: Resource(name: 'Minerai de fer', color: const Color(0xFFced4da), description: "Du minerai de fer brut"),
         ),
       ],
+      quantity: 0,
     ),
     Recipe(
       name: 'Lingot de fer',
@@ -69,6 +73,7 @@ List<Recipe> getRecipes() {
           resource: Resource(name: 'Minerai de fer', color: const Color(0xFFced4da), description: "Du minerai de fer brut"),
         ),
       ],
+      quantity: 0,  
     ),
     Recipe(
       name: 'Plaque de fer',
@@ -81,6 +86,7 @@ List<Recipe> getRecipes() {
           resource: Resource(name: 'Minerai de fer', color: const Color(0xFFced4da), description: "Du minerai de fer brut"),
         ),
       ],
+      quantity: 0,
     ),
     Recipe(
       name: 'Lingot de cuivre',
@@ -93,6 +99,7 @@ List<Recipe> getRecipes() {
           resource: Resource(name: 'Minerai de cuivre', color: const Color(0xFFd9480f), description: "Du minerai de cuivre brut"),
         ),
       ],
+      quantity: 0,
     ),
     Recipe(
       name: 'Tige en métal',
@@ -105,6 +112,7 @@ List<Recipe> getRecipes() {
           resource: Resource(name: 'Lingot de fer', color: const Color(0xFFced4da), description: "Du lingot de fer pur"),
         ),
       ],
+      quantity: 0,
     ),
     Recipe(
       name: 'Fil électrique',
@@ -117,6 +125,7 @@ List<Recipe> getRecipes() {
           resource: Resource(name: 'Lingot de cuivre', color: const Color(0xFFd9480f), description: "Du lingot de cuivre pur"),
         ),
       ],
+      quantity: 0,
     ),
     Recipe(
       name: 'Mineur',
@@ -133,6 +142,7 @@ List<Recipe> getRecipes() {
           resource: Resource(name: 'Fil électrique', color: const Color(0xFFd9480f), description: "Du fil électrique"),
         ),
       ],
+      quantity: 0,
     ),
     Recipe(
       name: 'Fonderie',
@@ -149,6 +159,7 @@ List<Recipe> getRecipes() {
           resource: Resource(name: 'Tige en métal', color: const Color(0xFFced4da), description: "Du tige en métal"),
         ),
       ],
+      quantity: 0,
     )
   ];
 }

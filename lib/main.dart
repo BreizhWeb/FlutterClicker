@@ -5,11 +5,16 @@ import 'ressources.dart';
 import 'recettes.dart';
 
 void main() {
-  runApp(MyApp());
+  final resourcesManager = ResourcesManager(); // Création d'une instance de ResourcesManager
+  final List<Recipe> recipes = getRecipes(); // Récupération des recettes
+  runApp(MyApp(resourcesManager: resourcesManager, recipes: recipes));
 }
 
 class MyApp extends StatelessWidget {
-  final ResourcesManager resourcesManager = ResourcesManager(); // Instanciation du ResourcesManager
+  final ResourcesManager resourcesManager;
+  final List<Recipe> recipes;
+
+  MyApp({required this.resourcesManager, required this.recipes});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +26,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => MainPage(resourcesManager: resourcesManager), // Passer resourcesManager à MainPage
-        '/boutique': (context) => BoutiquePage(recipes: getRecipes(), resourcesManager: resourcesManager), // Passer resourcesManager à BoutiquePage
+        '/boutique': (context) => BoutiquePage( resourcesManager: resourcesManager, recipes: recipes,), // Passer resourcesManager à BoutiquePage
         '/inventaire': (context) => InventairePage(recipes: getRecipes(), resourcesManager: resourcesManager), // Passer resourcesManager à InventairePage
       },
     );
