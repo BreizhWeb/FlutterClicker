@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'recettes.dart';
 import 'ressources.dart';
 
@@ -11,14 +11,14 @@ class ProducedItem {
 
 class InventairePage extends StatelessWidget {
   final List<Recipe> recipes;
-  final List<Resource> resources;
-  final List<ProducedItem> producedItems = []; 
+  final ResourcesManager resourcesManager;
+  final List<ProducedItem> producedItems = [];
 
-  InventairePage({required this.recipes, required this.resources});
+  InventairePage({required this.recipes, required this.resourcesManager});
 
   @override
   Widget build(BuildContext context) {
-    _updateProducedItems(); 
+    _updateProducedItems();
 
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +37,7 @@ class InventairePage extends StatelessWidget {
   Widget _buildResourceList() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: resources.map((resource) {
+      children: resourcesManager.resources.map((resource) {
         return ListTile(
           title: Text(resource.name),
           subtitle: Text('Quantité: ${resource.quantity}'),
@@ -70,5 +70,3 @@ class InventairePage extends StatelessWidget {
     }
   }
 }
-
-

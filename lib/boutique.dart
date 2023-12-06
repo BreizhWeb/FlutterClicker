@@ -1,12 +1,26 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'ressources.dart';
 import 'recettes.dart';
 
-class BoutiquePage extends StatelessWidget {
+class BoutiquePage extends StatefulWidget {
   final List<Recipe> recipes;
-  final List<Resource> resources;
+  final ResourcesManager resourcesManager;
 
-  BoutiquePage({required this.recipes, required this.resources});
+  BoutiquePage({required this.recipes, required this.resourcesManager});
+
+  @override
+  _BoutiquePageState createState() => _BoutiquePageState();
+}
+
+class _BoutiquePageState extends State<BoutiquePage> {
+  late List<bool> canProduceList;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialise la liste de booléens pour suivre l'état de chaque recette
+    canProduceList = List.generate(widget.recipes.length, (index) => _canProduceRecipe(widget.recipes[index]));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +29,9 @@ class BoutiquePage extends StatelessWidget {
         title: Text('Boutique'),
       ),
       body: ListView.builder(
-        itemCount: recipes.length,
+        itemCount: widget.recipes.length,
         itemBuilder: (BuildContext context, int index) {
-          final recipe = recipes[index];
-          final canProduce = _canProduceRecipe(recipe);
+          final recipe = widget.recipes[index];
 
           return ListTile(
             title: Column(
@@ -33,7 +46,7 @@ class BoutiquePage extends StatelessWidget {
               ],
             ),
             trailing: ElevatedButton(
-              onPressed: canProduce ? () => _produceItem(recipe) : null,
+              onPressed: canProduceList[index] ? () => _produceItem(recipe, index) : null,
               child: Text('Produire'),
             ),
           );
@@ -54,7 +67,7 @@ class BoutiquePage extends StatelessWidget {
   bool _canProduceRecipe(Recipe recipe) {
     // Vérifie si les ressources nécessaires pour fabriquer la recette sont disponibles
     for (var cost in recipe.cost) {
-      var resource = resources.firstWhere(
+      var resource = widget.resourcesManager.resources.firstWhere(
         (res) => res.name == cost.resource.name,
         orElse: () => Resource(
           name: cost.resource.name,
@@ -70,9 +83,9 @@ class BoutiquePage extends StatelessWidget {
     return true;
   }
 
-  void _produceItem(Recipe recipe) {
+    void _produceItem(Recipe recipe, int index) {
     for (var cost in recipe.cost) {
-      var resource = resourcesManager.resources.firstWhere(
+      var resource = widget.resourcesManager.resources.firstWhere(
         (res) => res.name == cost.resource.name,
         orElse: () => Resource(
           name: cost.resource.name,
@@ -83,8 +96,15 @@ class BoutiquePage extends StatelessWidget {
       );
       resource.quantity -= cost.quantity;
 
-      resourcesManager.resources.removeWhere((res) => res.name == resource.name);
-      resourcesManager.resources.add(resource);
+      // Mettre à jour les ressources dans resourcesManager
+      widget.resourcesManager.consumeResources([resource]);
     }
+
+    // Actualiser l'état de la liste entière après la production
+    setState(() {
+      for (var i = 0; i < widget.recipes.length; i++) {
+        canProduceList[i] = _canProduceRecipe(widget.recipes[i]);
+      }
+    });
   }
 }

@@ -9,7 +9,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final List<Resource> resources = getResources();
+  final ResourcesManager resourcesManager = ResourcesManager(); // Instanciation du ResourcesManager
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +20,18 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => MainPage(resources: resources),
-        '/boutique': (context) => BoutiquePage(recipes: getRecipes(), resources: resources),
-        '/inventaire': (context) => InventairePage(recipes: getRecipes(), resources: resources),
+        '/': (context) => MainPage(resourcesManager: resourcesManager), // Passer resourcesManager à MainPage
+        '/boutique': (context) => BoutiquePage(recipes: getRecipes(), resourcesManager: resourcesManager), // Passer resourcesManager à BoutiquePage
+        '/inventaire': (context) => InventairePage(recipes: getRecipes(), resourcesManager: resourcesManager), // Passer resourcesManager à InventairePage
       },
     );
   }
 }
 
 class MainPage extends StatelessWidget {
-  final List<Resource> resources;
+  final ResourcesManager resourcesManager;
 
-  MainPage({required this.resources});
+  MainPage({required this.resourcesManager});
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +47,16 @@ class MainPage extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(Icons.shopping_cart),
-            onPressed: () {
-              Navigator.pushNamed(context, '/boutique');
+            onPressed: () async {
+              var refreshed = await Navigator.pushNamed(context, '/boutique');
+              if (refreshed == true) {
+                Navigator.pushNamed(context, '/main'); // Rafraîchir la page actuelle
+              }
             },
           ),
         ],
       ),
-      body: ResourceGrid(resources: resources),
+      body: ResourceGrid(resources: resourcesManager.resources),
     );
   }
 }
